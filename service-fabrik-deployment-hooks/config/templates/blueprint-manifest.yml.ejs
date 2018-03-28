@@ -1,0 +1,66 @@
+<%= spec.header %>
+
+update:
+  canaries: 0
+  max_in_flight: 50
+  canary_watch_time: 1000-100000
+  update_watch_time: 1000-100000
+  serial: false
+
+instance_groups: &instance_groups
+<%
+var net;
+var azs;
+if (spec.multi_az_enabled){
+  net = spec.networks[1];
+  azs = '[z2]';
+} else {
+  net = spec.networks[0];
+  azs = '[z1]';
+}
+const stemcell = spec.stemcell;
+const members = net.static.slice(0,1);
+const properties = {};
+if (!spec.previous_manifest) {
+  /* create scenario: pick random service instance properties */
+  properties.blueprint = {
+    admin: {
+      username: SecureRandom.hex(16),
+      password: SecureRandom.hex(16)
+    }
+  };
+} else {
+  if(!spec.previous_manifest.instance_groups){
+    properties.blueprint = spec.previous_manifest.properties.blueprint;
+  }else{
+    properties.blueprint = spec.previous_manifest.instance_groups[0].jobs[0].properties;
+  }
+}
+%>
+- name: blueprint
+  migrated_from:
+  - name: blueprint_z1
+  instances: <%= members.length %>
+  networks:
+  - name: <%= net.name %>
+    static_ips: <%= JSON.stringify(members) %>
+  vm_type: <%= p('vm_type') %>
+  azs: <%= azs %>
+  persistent_disk_type: <%= p('disk_type') %>
+  stemcell: <%= stemcell.alias %>
+  jobs:
+  - name: blueprint
+    release: blueprint
+    blueprint: &blueprint
+    properties:
+      port: 8080
+      actionResponse: <%= JSON.stringify(spec.actions) %>
+      admin:
+        username: <%= properties.blueprint.admin.username %>
+        password: <%= properties.blueprint.admin.password %>
+  - name: broker-agent
+    release: blueprint
+    properties:
+      username: <%= p('agent.auth.username') %>
+      password: <%= p('agent.auth.password') %>
+      provider: <%= JSON.stringify(p('agent.provider')) %>

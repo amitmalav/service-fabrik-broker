@@ -1,0 +1,38 @@
+<%
+const path = require('path');
+const log_path = path.join(__dirname, '..', 'logs', `${process.env.NODE_ENV}.log`)
+const broker_name = 'service-fabrik-broker';
+const ip = '10.0.2.2';
+const hook = {
+  protocol: 'https',
+  ip: ip,
+  port: 9295
+};
+%>
+---
+development:
+  ####################
+  # GENERAL SETTINGS #
+  ####################
+  username: 'hook'
+  password: 'secret'
+  # skip_ssl_validation: true
+  # session_store:
+  #   path: /var/vcap/store/service-fabrik-broker/session
+  log_path: <%= log_path %>
+  enable_circuit_breaker: false
+  http_timeout: 175000
+
+  ##############################
+  # REPORT ENDPOINT SETTINGS #
+  ##############################
+  hook: &hook
+    log_event: true
+    event_type: SF.HOOK
+    port: <%= hook.port %>
+    ip: <%= hook.ip %>
+    protocol: <%= hook.protocol%>
+    host: <%= `${hook.ip}:${hook.port}` %>
+    ssl:
+      key: <%= certificate('broker.key') %>
+      cert: <%= certificate('broker.crt') %>
