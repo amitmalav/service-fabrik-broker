@@ -11,9 +11,9 @@ defaults:
                                          #  gets invoked via backup/restore etc, which are to be ignored when coming via HTTP Patch.
   include_response_body: false # wheter HTTP response body is to be logged after sanitization or not
 "/hook":
-  GET:
+  POST:
     enabled: true
-    event_name: instance_backup_summary
-    description: Get backup summary of instance
+    event_name: get_action_response
+    description: Get deployment hook action response
     tags:
-    - backup
+    - hooks

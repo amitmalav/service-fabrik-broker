@@ -4,10 +4,10 @@ const fs = require('fs');
 const _ = require('lodash');
 const Promise = require('bluebird');
 const path = require('path');
-const logger = require('../../logger');
-const errors = require('../../errors');
-const CONST = require('../../constants');
-const ScriptExecutor = require('../../utils/ScriptExecutor');
+const logger = require('../logger');
+const errors = require('../errors');
+const CONST = require('../constants');
+const ScriptExecutor = require('../utils/ScriptExecutor');
 
 class ActionManager {
   static getAction(phase, action) {
@@ -63,6 +63,17 @@ class ActionManager {
       return Promise.resolve(0);
     };
     return actionHandler;
+  }
+
+  static executeActions(phase, actions, context) {
+    const actionResponse = {};
+    return Promise.map(actions, (action) => {
+        logger.debug(`Looking up action ${action}`);
+        const actionHandler = this.getAction(phase, action);
+        return actionHandler(context)
+          .tap(resp => actionResponse[action] = resp);
+      })
+      .return(actionResponse);
   }
 }
 

@@ -258,6 +258,7 @@ class EventLogInterceptor {
 
   execute(req, res, data) {
     logger.debug('intercepting request : ', req.__route);
+    console.log(req.__route);
     const reqPath = req.__route.replace(/\/+$/, '');
     if (res && _.includes(config.monitoring.unauthorized.http_status, res.statusCode)) {
       // irrespective of whether configured or not. UNAUTHENTICATED/UNAUTHORIZED Requests must be logged

@@ -9,7 +9,7 @@ const logger = require('./logger');
 // const CONST = require('../lib/constants');
 // const Forbidden = errors.Forbidden;
 // const BadRequest = errors.BadRequest;
-// const MethodNotAllowed = errors.MethodNotAllowed;
+const MethodNotAllowed = errors.MethodNotAllowed;
 const NotFound = errors.NotFound;
 const Unauthorized = errors.Unauthorized;
 const EventLogInterceptor = require('./EventLogInterceptor');
@@ -206,6 +206,8 @@ exports.requireEventLogging = function (appConfig, appType) {
         if (responseContentType.indexOf('application/json') !== -1) {
           body = JSON.parse(body);
         }
+        console.log('bfkwf');
+        console.log(req.__route);
         eventsLogInterceptor.execute(req, res, body);
         logger.debug('Done processing request: ', req.__route);
       } catch (err) {

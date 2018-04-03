@@ -8,9 +8,9 @@ const router = module.exports = express.Router();
 
 router.use(middleware.basicAuth(config.username, config.password));
 router.use(middleware.csp());
-router.route('/backups/summary/:instance_id')
-  .get(controller.handler('getServiceInstanceBackupSummary'))
-  .all(middleware.methodNotAllowed(['GET']));
+router.route('/')
+  .post(controller.handler('getActionResponse'))
+  .all(middleware.methodNotAllowed(['POST']));
 
 router.use(middleware.notFound());
 router.use(middleware.error({
