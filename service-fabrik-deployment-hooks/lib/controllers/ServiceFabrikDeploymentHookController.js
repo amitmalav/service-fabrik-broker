@@ -1,14 +1,14 @@
 'use strict';
 
 var moment = require('moment-timezone');
-const BaseController = require('./BaseController');
+const HookBaseController = require('./HookBaseController');
 const ActionManager = require('../actions/ActionManager');
 const errors = require('../errors');
-const logger = require('../logger');
+const logger = require('../../../common/logger');
 const CONST = require('../constants');
 const BadRequest = errors.BadRequest;
 
-class serviceFabrikDeploymentHookController extends BaseController {
+class serviceFabrikDeploymentHookController extends HookBaseController {
   constructor() {
     super();
   }

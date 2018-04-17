@@ -3,10 +3,9 @@
 const http = require('http');
 const https = require('https');
 const pubsub = require('pubsub-js');
-// const lib = require('./lib');
-const CONST = require('./lib/constants');
-const logger = require('./lib/logger');
-const errors = require('./lib/errors');
+const CONST = require('./constants');
+const logger = require('./logger');
+const errors = require('./errors');
 
 class HttpServer {
   static start(app) {
@@ -64,7 +63,7 @@ class HttpServer {
     pubsub.publish(CONST.TOPIC.APP_SHUTTING_DOWN);
     //Publish shutdown message to all & wait for 5 secs
     setTimeout(() => {
-      logger.info('ServiceFabrik shutdown complete');
+      logger.info('App shutdown complete');
       process.exit(2);
     }, 500);
   }

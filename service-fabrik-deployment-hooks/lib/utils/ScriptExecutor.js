@@ -4,8 +4,8 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const path = require('path');
 const child_process = require('child_process');
-const logger = require('../logger');
-const errors = require('../errors');
+const logger = require('../../../common/logger');
+const errors = require('../../../common/errors');
 
 class ScriptExecutor {
   constructor(scriptAbsPath) {

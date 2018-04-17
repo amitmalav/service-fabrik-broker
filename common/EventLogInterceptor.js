@@ -14,7 +14,7 @@ class EventLogInterceptor {
   constructor(eventType, appType) {
     const configFileName = `eventlog-config-${appType}.yml`;
     const eventConfAbsPath = process.env.CONF_DIR ? path.join(process.env.CONF_DIR, configFileName) :
-      path.join(__dirname, '..', 'config', configFileName);
+      path.join(__dirname, 'config', configFileName);
     this.EVENT_LOG_CONFIG = yaml.safeLoad(fs.readFileSync(eventConfAbsPath, 'utf8'));
     this.eventType = eventType;
   }
@@ -258,7 +258,6 @@ class EventLogInterceptor {
 
   execute(req, res, data) {
     logger.debug('intercepting request : ', req.__route);
-    console.log(req.__route);
     const reqPath = req.__route.replace(/\/+$/, '');
     if (res && _.includes(config.monitoring.unauthorized.http_status, res.statusCode)) {
       // irrespective of whether configured or not. UNAUTHENTICATED/UNAUTHORIZED Requests must be logged

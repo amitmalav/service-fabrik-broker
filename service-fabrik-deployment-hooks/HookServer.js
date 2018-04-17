@@ -1,10 +1,9 @@
 'use strict';
 
 console.log('Starting Service Fabrik Deployment Hook App...');
-// const lib = require('./lib');
+const HttpServer = require('../common/HttpServer');
+const FabrikApp = require('../common/app');
 const routes = require('./lib/routes');
-const HttpServer = require('./HttpServer');
-const FabrikApp = require('./FabrikApp');
 
 const hook = FabrikApp.create('hook', app => {
   app.get('/', (req, res) => {

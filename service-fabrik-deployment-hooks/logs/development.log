@@ -1,4 +1,0 @@
-2018-03-28T09:43:07.906Z - [32minfo[39m: Service Fabrik Broker (hook): successfully started listening on port 9295
-2018-03-28T09:44:08.325Z - [32minfo[39m: App shutting down shortly...
-2018-03-28T09:44:08.327Z - [32minfo[39m: Disconnecting Riemann
-2018-03-28T09:44:08.831Z - [32minfo[39m: ServiceFabrik shutdown complete

@@ -7,13 +7,12 @@ const yaml = require('js-yaml');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-// const lib = require('./lib');
-const config = require('./lib/config');
-const logger = require('./lib/logger');
-const middleware = require('./lib/middleware');
+const config = require('./config');
+const logger = require('./logger');
+const middleware = require('./middleware');
 const connectTimeout = require('connect-timeout');
 
-class FabrikApp {
+class app {
   static create(type, addRoutes) {
     const app = express();
     app.locals.moment = moment;
@@ -66,4 +65,4 @@ class FabrikApp {
     return app;
   }
 }
-module.exports = FabrikApp;
+module.exports = app;

@@ -4,7 +4,7 @@ const _ = require('lodash');
 const pubsub = require('pubsub-js');
 const config = require('../config');
 const logger = require('../logger');
-const Repository = require('../db').Repository;
+const Repository = require('../db/Repository');
 const CONST = require('../constants');
 
 class EventLogDBClient {
