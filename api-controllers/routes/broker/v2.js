@@ -28,6 +28,7 @@ router.use(commonMiddleware.notFound());
 router.use(commonMiddleware.error({
   defaultFormat: 'json'
 }));
+instanceRouter.use(controller.handler('enrichContext'));
 
 /* Service Instance Router */
 instanceRouter.route('/')
