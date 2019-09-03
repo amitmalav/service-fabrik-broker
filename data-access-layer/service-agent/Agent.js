@@ -106,7 +106,8 @@ class Agent extends HttpClient {
           method: 'POST',
           url: url,
           auth: (authObject ? authObject : this.auth),
-          body: body
+          body: body,
+          timeout: CONST.AGENT.OPERATION_TIMEOUT_IN_MILLIS
         }, expectedStatusCode || CONST.HTTP_STATUS_CODE.OK)
         .then(res => res.body));
   }
@@ -118,7 +119,8 @@ class Agent extends HttpClient {
         method: 'PUT',
         url: url,
         auth: this.auth,
-        body: body
+        body: body,
+        timeout: CONST.AGENT.OPERATION_TIMEOUT_IN_MILLIS
       }, expectedStatusCode || 204))
       .return();
   }
@@ -130,7 +132,8 @@ class Agent extends HttpClient {
         method: 'DELETE',
         url: url,
         auth: this.auth,
-        body: body
+        body: body,
+        timeout: CONST.AGENT.OPERATION_TIMEOUT_IN_MILLIS
       }, expectedStatusCode || 204))
       .return();
   }
