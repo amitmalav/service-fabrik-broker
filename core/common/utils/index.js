@@ -65,11 +65,7 @@ exports.verifyFeatureSupport = verifyFeatureSupport;
 exports.isRestorePossible = isRestorePossible;
 exports.getPlatformManager = getPlatformManager;
 exports.getPlatformFromContext = getPlatformFromContext;
-exports.pushServicePlanToApiServer = pushServicePlanToApiServer;
-exports.getPlanCrdFromConfig = getPlanCrdFromConfig;
-exports.getServiceCrdFromConfig = getServiceCrdFromConfig;
-exports.registerSFEventsCrd = registerSFEventsCrd;
-exports.waitWhileCRDsAreRegistered = waitWhileCRDsAreRegistered;
+exports.registerInterOperatorCrds = registerInterOperatorCrds;
 exports.getAllServices = getAllServices;
 exports.getAllPlansForService = getAllPlansForService;
 exports.loadCatalogFromAPIServer = loadCatalogFromAPIServer;
@@ -679,80 +675,7 @@ function getPlatformManager(context) {
   }
 }
 
-function getPlanCrdFromConfig(plan, service) {
-  assert.ok(plan.name, 'plan.name is required to generate plan crd');
-  assert.ok(plan.id, 'plan.id is required to generate plan crd');
-  assert.ok(plan.description, 'plan.description is required to generate plan crd');
-
-  let planCRD = {
-    apiVersion: 'osb.servicefabrik.io/v1alpha1',
-    kind: 'SFPlan',
-    metadata: {
-      name: plan.id,
-      labels: {
-        'controller-tools.k8s.io': '1.0',
-        serviceId: service.id
-      }
-    },
-    spec: {
-      name: plan.name,
-      id: plan.id,
-      serviceId: service.id,
-      description: plan.description,
-      free: plan.free ? true : service.free ? true : false,
-      bindable: plan.bindable ? plan.bindable : service.bindable ? service.bindable : false,
-      planUpdatable: plan.bindable ? true : false,
-      templates: plan.templates ? plan.templates : [],
-      metadata: plan.metadata,
-      manager: plan.manager,
-      context: plan.context
-    }
-  };
-  return planCRD;
-}
-
-function getServiceCrdFromConfig(service) {
-  assert.ok(service.name, 'service.name is required to generate plan crd');
-  assert.ok(service.id, 'service.id is required to generate plan crd');
-  assert.ok(service.description, 'service.description is required to generate plan crd');
-  assert.ok(service.bindable, 'service.bindable is required to generate plan crd');
-
-  let serviceCRD = {
-    apiVersion: 'osb.servicefabrik.io/v1alpha1',
-    kind: 'SFService',
-    metadata: {
-      name: service.id,
-      labels: {
-        'controller-tools.k8s.io': '1.0',
-        serviceId: service.id
-      }
-    },
-    spec: {
-      name: service.name,
-      id: service.id,
-      bindable: service.bindable,
-      description: service.description,
-      metadata: service.metadata,
-      tags: service.tags,
-      dashboardClient: service.dashboard_client,
-      planUpdateable: service.plan_updateable
-    }
-  };
-  return serviceCRD;
-}
-
-function pushServicePlanToApiServer() {
-  if (!config.apiserver.isServiceDefinitionAvailableOnApiserver) {
-    const eventmesh = require('../../data-access-layer/eventmesh');
-    return Promise.map(config.services, service => {
-      const servicePromise = eventmesh.apiServerClient.createOrUpdateServicePlan(getServiceCrdFromConfig(service));
-      return Promise.map(service.plans, plan => eventmesh.apiServerClient.createOrUpdateServicePlan(getPlanCrdFromConfig(plan, service))
-        .then(() => servicePromise));
-    });
-  }
-}
-
-function registerSFEventsCrd() {
+function registerInterOperatorCrds() {
   const eventmesh = require('../../data-access-layer/eventmesh');
   return Promise.all([
     eventmesh.apiServerClient.registerCrds(CONST.APISERVER.RESOURCE_GROUPS.INSTANCE, CONST.APISERVER.RESOURCE_TYPES.SFEVENT)
