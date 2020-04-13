@@ -1,6 +1,7 @@
 'use strict';
 
 const nock = require('nock');
+const _ = require('lodash');
 const {
   apiServerClient,
   utils: {
