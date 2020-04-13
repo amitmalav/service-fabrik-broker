@@ -49,26 +49,6 @@ matrix:
         depth: 3
       before_install:
         - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-      install:
-        - pushd interoperator
-        - env KUBEBUILDER_VERSION=v1.0.7 ./scripts/install_test.sh
-        - popd
-        - cd webhooks
-        - dep ensure -v
-        - cd ..
-      script:
-        - pushd webhooks
-        - go test -v -coverpkg=./pkg/webhooks/... -coverprofile=coverage.txt ./pkg/webhooks/manager/...
-        - popd
-    - language: go
-      os:
-        - linux
-      go:
-        - "1.13"
-      git:
-        depth: 3
-      before_install:
-        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         - go get golang.org/x/lint/golint
       install:
         - cd interoperator
@@ -96,7 +76,7 @@ matrix:
         - "npm run -s test-coverall"
     - language: node_js
       node_js:
-        - "12.14"
+        - "12.13"
       env:
         - SETTINGS_PATH="$(pwd)/broker/config/settings.yml"
       script:
@@ -104,7 +84,7 @@ matrix:
         - "npm run -s jsdoc"
     - language: node_js
       node_js:
-        - "12.14"
+        - "12.13"
       before_install:
         # - pip install --user truffleHog==2.0.89
         - |
