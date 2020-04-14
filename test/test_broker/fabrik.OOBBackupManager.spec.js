@@ -10,6 +10,7 @@ const {
   backupStoreForOob,
   BackupStore
 } = require('@sf/iaas');
+const config = require('@sf/app-config');
 const Agent = require('../../data-access-layer/service-agent');
 const { FabrikBaseController } = require('@sf/common-controllers');
 const { CONST } = require('@sf/common-utils');

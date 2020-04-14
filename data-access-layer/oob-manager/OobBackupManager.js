@@ -97,6 +97,7 @@ class OobBackupManager {
     }
 
     const deploymentName = opts.deploymentName;
+
     return Promise.try(() => {
       if(!opts.agent_properties) {
         return this.boshDirector.getAgentPropertiesFromManifest(deploymentName);
@@ -228,6 +229,7 @@ class OobBackupManager {
       return _.includes(['succeeded', 'failed', 'aborted'], state);
     }
     const deploymentName = opts.deploymentName;
+
     return Promise.try(() => {
       if(!opts.agent_properties) {
         return this.boshDirector.getAgentPropertiesFromManifest(deploymentName);
