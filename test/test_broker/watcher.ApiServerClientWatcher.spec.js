@@ -10,6 +10,11 @@ describe('WatcherRegistration', () => {
       function handler() {
         handlerCalled = true;
       }
+      mocks.apiServerEventMesh.nockRegisterWatcher(CONST.APISERVER.RESOURCE_GROUPS.LOCK,
+        CONST.APISERVER.RESOURCE_TYPES.DEPLOYMENT_LOCKS, {
+          labelSelector: '',
+          timeoutSeconds: 600
+        });
       return apiServerClient.registerWatcher(CONST.APISERVER.RESOURCE_GROUPS.LOCK,
         CONST.APISERVER.RESOURCE_TYPES.DEPLOYMENT_LOCKS, handler)
         .tap(stream => stream.write('{"foo":1}'))
