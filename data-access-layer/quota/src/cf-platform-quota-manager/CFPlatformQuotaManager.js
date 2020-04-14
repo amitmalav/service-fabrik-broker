@@ -2,10 +2,10 @@
 
 const _ = require('lodash');
 const Promise = require('bluebird');
-const logger = require('../../common/logger');
-const cf = require('../../data-access-layer/cf');
-const config = require('../../common/config');
-const CONST = require('../../common/constants');
+const logger = require('@sf/logger');
+const { cloudController } = require('@sf/cf');
+const config = require('@sf/app-config');
+const { CONST } = require('@sf/common-utils');
 const BaseQuotaManager = require('../BaseQuotaManager');
 
 class CFPlatformQuotaManager extends BaseQuotaManager {
@@ -16,12 +16,12 @@ class CFPlatformQuotaManager extends BaseQuotaManager {
   async getInstanceCountonPlatform(orgId, planIds) {
     const planGuids = await this.getAllPlanGuidsFromPlanIDs(planIds);
     logger.debug('planguids are ', planGuids);
-    const instances = await cf.cloudController.getServiceInstancesInOrgWithPlansGuids(orgId, planGuids);
+    const instances = await cloudController.getServiceInstancesInOrgWithPlansGuids(orgId, planGuids);
     return _.size(instances);
   }
 
   async isOrgWhitelisted(orgId) {
-    const org = await cf.cloudController.getOrganization(orgId);
+    const org = await cloudController.getOrganization(orgId);
     logger.debug('current org details are ', org);
     logger.debug('current org name is ', org.entity.name);
     logger.debug('Whitelisted orgs are ', config.quota.whitelist);
@@ -33,7 +33,7 @@ class CFPlatformQuotaManager extends BaseQuotaManager {
   }
 
   async getPlanGuidFromPlanID(planId) {
-    const plans = await cf.cloudController.getServicePlans(`unique_id:${planId}`);
+    const plans = await cloudController.getServicePlans(`unique_id:${planId}`);
     logger.debug(`planguid for uniqueid ${planId} is ${_.head(plans).metadata.guid}`);
     return _.head(plans).metadata.guid;
   }

@@ -1,11 +1,12 @@
 'use strict';
 
 const _ = require('lodash');
-const errors = require('../common/errors');
-const CONST = require('../common/constants');
-const logger = require('../common/logger');
-const NotImplementedBySubclass = errors.NotImplementedBySubclass;
-const catalog = require('../common/models/catalog');
+const {
+  CONST,
+  errors: { NotImplementedBySubclass }
+} = require('@sf/common-utils');
+const logger = require('@sf/logger');
+const { catalog } = require('@sf/models');
 
 class BaseQuotaManager {
   constructor(quotaAPIClient, platform) {
@@ -83,6 +84,6 @@ class BaseQuotaManager {
     return planName.substring(planName.indexOf('-', firstIdx)); // and skuName will be only -{...}-<tshirt-size>
   }
 
-};
+}
 
 module.exports = BaseQuotaManager;

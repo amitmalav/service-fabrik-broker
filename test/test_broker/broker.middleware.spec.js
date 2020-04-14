@@ -8,7 +8,7 @@ const middleware = proxyquire('../../applications/osb-broker/src/api-controllers
   }
 });
 const {
-  quotaManager
+  getQuotaManagerInstance
 } = require('@sf/quota');
 const {
   CONST,
@@ -20,6 +20,8 @@ const {
 } = require('@sf/common-utils');
 const config = require('@sf/app-config');
 const ServiceFabrikApiController = require('../../applications/extensions/src/api-controllers/ServiceFabrikApiController');
+const quotaManager = getQuotaManagerInstance(CONST.PLATFORM.CF);
+const k8squotaManager = getQuotaManagerInstance(CONST.PLATFORM.K8S);
 const PROMISE_WAIT_SIMULATED_DELAY = 30;
 
 class Response {
@@ -106,7 +108,7 @@ describe('#checkQuota', () => {
     service_id: service_id,
     plan_id: plan_id_update,
     parameters: operationParameters,
-    // context: context,
+    //context: context,
     previous_values: {
       plan_id: plan_id,
       service_id: service_id
