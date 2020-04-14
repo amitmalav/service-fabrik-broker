@@ -100,7 +100,6 @@ function nockGetCrd(resourceGroup, resourceType, response, times, expectedStatus
     .reply(expectedStatusCode || 200, response);
 }
 
-
 function nockCreateResource(resourceGroup, resourceType, response, times, verifier, expectedStatusCode) {
   nock(apiServerHost)
     .post(`/apis/${resourceGroup}/v1alpha1/namespaces/default/${resourceType}`, verifier)
